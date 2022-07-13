@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /posts/{document=**} {
+      // Anyone can read posts.
+      allow read: if true;
+      // Only authenticated users can create new posts.
+      allow write: if request.auth != null;
+      // No one (except priviliged backend) can update existing posts.
+      allow update: if false;
+      // TODO: separate rule to allow authors to delete their posts.
+    }
+  }
+}
